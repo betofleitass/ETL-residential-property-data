@@ -9,6 +9,9 @@ notes.md
 # Temp
 tmp/
 
+# Data
+data/
+
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
