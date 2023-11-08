@@ -1,6 +1,7 @@
 # Import the necessary components from the 'base' and 'tables' modules
 from base import Base, engine
-from tables import PprRawAll
+from tables import PprRawAll, PprCleanAll
+
 
 # Loop through the tables defined in the metadata of the 'Base' class and print their names
 for table in Base.metadata.tables:

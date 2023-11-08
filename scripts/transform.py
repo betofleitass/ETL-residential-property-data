@@ -53,7 +53,8 @@ def update_price(price_input):
     - "," to convert the number into float first (e.g. from "€100,000.00" to "100000.00")
     """
     price_input = price_input.replace("€", "")
-    price_input = float(price_input.replace(",", ""))
+    price_input = price_input.replace(",", "")
+    price_input = float(price_input)
     return int(price_input)
 
 
@@ -62,6 +63,8 @@ def truncate_table():
     Ensure that "ppr_raw_all" table is always in empty state before running any transformations.
     And primary key (id) restarts from 1.
     """
+    print("[Transform] Remove any old data from ppr_raw_all table")
+
     session.execute(
         text("TRUNCATE TABLE ppr_raw_all;ALTER SEQUENCE ppr_raw_all_id_seq RESTART;")
     )
@@ -72,6 +75,9 @@ def transform_new_data():
     """
     Apply all transformations for each row in the .csv file before saving it into database
     """
+    print("[Transform] Transform new data available in ppr_raw_all table")
+
+
     with open(raw_path, mode="r", encoding="windows-1252") as csv_file:
         # Read the new CSV snapshot ready to be processed
         reader = csv.DictReader(csv_file)
@@ -85,23 +91,18 @@ def transform_new_data():
                     address=transform_case(row["address"]),
                     postal_code=transform_case(row["postal_code"]),
                     county=transform_case(row["county"]),
-                    eircode=transform_case(row["eircode"]),
                     price=update_price(row["price"]),
-                    not_full_market_price=transform_case(row["not_full_market_price"]),
-                    vat_exclusive=transform_case(row["vat_exclusive"]),
                     description=update_description(row["description"]),
-                    property_size_description=transform_case(row["property_size_description"]),
                 )
             )
         # Save all new processed objects and commit
+        print("[Transform] Bulk saving new data available in ppr_raw_all table")
         session.bulk_save_objects(ppr_raw_objects)
         session.commit()
 
 
 def main():
     print("[Transform] Start")
-    print("[Transform] Remove any old data from ppr_raw_all table")
     truncate_table()
-    print("[Transform] Transform new data available in ppr_raw_all table")
     transform_new_data()
     print("[Transform] End")

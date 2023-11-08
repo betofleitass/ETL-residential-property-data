@@ -74,19 +74,24 @@ def save_new_raw_data():
                             "Address": "address",
                             "Postal Code": "postal_code",
                             "County": "county",
-                            "Eircode": "eircode",
                             "Price (€)": "price",
-                            "Not Full Market Price": "not_full_market_price",
-                            "VAT Exclusive": "vat_exclusive",
                             "Description of Property": "description",
-                            "Property Size Description": "property_size_description",
                         }
                         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+
+                        # Only write certain number of rows
+                        counter = 1
                         # Write headers as first line
                         writer.writerow(fieldnames)
                         for row in reader:
-                            # Write all rows in file
-                            writer.writerow(row)
+                            # Filter the dictionary to only include fields present in fieldnames
+                            filtered_rowdict = {key: value for key, value in row.items() if key in fieldnames}
+                            if counter <=100000:
+                                # Write all rows in file
+                                writer.writerow(filtered_rowdict)
+                                counter = counter + 1
+                            else:
+                                break
 
     else:
         print(f"[Extract] File already exists. Skipping saving raw data")
