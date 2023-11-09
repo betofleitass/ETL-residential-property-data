@@ -127,4 +127,4 @@ python scripts/execute.py
 
 This project is under [MIT License.](https://choosealicense.com/licenses/mit/)
 
-[Back to top ⬆️](#ETL-residential-property-data-)
+[Back to top ⬆️](#ETL-residential-property-data)
