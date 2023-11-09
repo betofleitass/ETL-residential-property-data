@@ -8,6 +8,7 @@ url = "postgresql+psycopg2://postgres:postgres@localhost:5432/residential_proper
 # Create a database engine using the URL
 engine = create_engine(url)
 
+# Create a session
 session = Session(engine)
 
 # Create a base class for declarative class definitions
