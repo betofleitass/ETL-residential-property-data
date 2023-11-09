@@ -3,13 +3,23 @@ Python-based ETL pipeline for processing and managing residential property sales
 
 This project is an Extract, Transform, Load (ETL) pipeline for processing residential property data from a public source and loading it into a PostgreSQL database. The pipeline consists of three main steps: extraction, transformation, and loading.
 
+
 ## Overview
 
 The ETL process is designed to handle residential property data, applying various transformations to the raw data before loading it into a clean database table. The project uses Python and SQLAlchemy for database interactions.
 
 ![ETL Pipeline](images/1_pipeline.png)
 
-### Key Features
+## Table of contents
+- [Overview](#overview)
+- [Key Features](#key-features)
+- [Structure](#structure)
+- [Installing Requirements](#installing-requirements)
+- [Usage](#usage)
+  - [Creating Database Tables](#1-creating-database-tables)
+  - [Running the ETL Process](#2-running-the-etl-process)
+
+## Key Features
 
 - **Extraction:** The project sources data from a ZIP file retrieved from an external website.
   
@@ -80,3 +90,41 @@ residential-property-data-etl/
 
 ### transform.py
 - The transformation phase is managed by this script. It applies various transformations to the data obtained from the "raw" CSV file. These transformations include updating the date format, converting strings to lowercase, and simplifying the property description. It then creates PprRawAll objects, each representing a row in the CSV file, and saves these objects to the database. Before saving, it truncates the "ppr_raw_all" table to ensure it is empty, preventing duplicate entries. If an error occurs during the transformation or data saving process, it raises an exception and exits the script.
+
+
+## Installing Requirements
+
+Navigate to the project directory and use the following command to install the required packages:
+
+```bash
+pip install -r requirements.txt
+```
+
+## Usage
+
+### 1. Creating Database Tables
+
+Before running the ETL process, execute the following command to run the `create_tables.py` script:
+
+```bash
+python scripts/common/create_tables.py
+```
+
+### 2. Running the ETL Process
+
+To initiate the entire ETL process run the `execute.py` script.:
+
+```bash
+python scripts/execute.py
+```
+![execute_output](images/5_execute_output.png)
+
+## Authors
+
+- [@betofleitass](https://www.github.com/betofleitass)
+
+##  License
+
+This project is under [MIT License.](https://choosealicense.com/licenses/mit/)
+
+[Back to top ⬆️](#ETL-residential-property-data-)
